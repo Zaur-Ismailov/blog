@@ -1,11 +1,12 @@
-{% extends 'base_layout.html'% }
+{% extends 'base_layout.html' %}
 
-{% block contect %}
+{% block content %}
+  <div class="container">
   {%for post in posts%}
   <a class="post" href="{% url 'app:post' post.pk %}">
    <div>
       <div class="title">{{post.title}}</div>
-      <div class="author">Опубликовано: Автор</div>
+      <div class="author">Опубликовано: admin</div>
     </div>
     <div>
         <div class="text">{{post.snippet}}</div>
@@ -13,4 +14,5 @@
       </div>
     </a>
   {% endfor %}
+  </div>
 {%endblock%}
