@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
 from django.contrib.auth import login, logout
 
 
@@ -14,4 +14,17 @@ def log_in(request):
         return redirect('app:home')
 
     return render(request, 'login.html', {'form': form})
+
+def log_out(request):
+    logout(request)
+    return redirect('users:login')
+
+def register(request):
+    form = RegisterForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        
+        return redirect('users:login')
+    return render(request, 'register.html', {'form': form})
 

@@ -6,8 +6,10 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(blank=True, default= 'default.png')
-    author = models.ForeignKey('auth.User', on_delete = models.CASCADE, default = 1)
-    
+    author = models.ForeignKey('auth.User', on_delete = models.CASCADE)
+    likes = models.ManyToManyField('auth.User', related_name='likes')
+    dislikes = models.ManyToManyField('auth.User', related_name='dislikes')
+
     def __str__(self):
         
         return self.title

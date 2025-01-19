@@ -7,6 +7,7 @@
       <div class="title">{{post.title}}</div>
       <div class="info">Дата добавлено автором: {{post.created_at|date:'d.m.y'}}</div>
     </div>
+    {% if user == post.author or user.is_superuser %}
     <div class="buttons">
       <a href="{% url 'app:edit_post' post.pk %}" class="button primary">
         <ion-icon name="create-outline"></ion-icon>
@@ -15,6 +16,7 @@
         <ion-icon name="trash-outline"></ion-icon>
       </a>
     </div>
+    {% endif %}
   </div>
 
   
@@ -24,5 +26,24 @@
     <img src="{{post.image.url}}" alt="" />
   </div>
   <div class="post-body">{{post.body}}</div>
+
+  <hr>
+  
+  <div class="post-buttons">
+    <a class="post-button {% if user in post.likes.all %} primary {% endif %}" href="{% url 'app:post_like' post.pk %}" >
+      
+        <ion-icon name="thumbs-up"></ion-icon>
+        <span>{{post.likes.count}}</span>
+
+    
+    </a>
+    <a class="post-button {% if user in post.dislikes.all %} danger {% endif %}" href="{% url 'app:post_dislike' post.pk %}" >
+      
+      <ion-icon name="thumbs-down"></ion-icon>
+      <span>{{post.dislikes.count}}</span>
+
+    
+    </a>
+  </div>
 </div>
 {% endblock %}

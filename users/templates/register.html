@@ -9,11 +9,13 @@
             {{field}}
         </div>
         {% endfor %}
-        <button class="botton primary"> Войти </button>
+        <button class="botton primary"> Зарегистрироваться </button>
+        
         <div class="link">
-            Еще нет аккаунта?
-            <a href="{% url 'users:register' %}"> Зарегистрироваться </a>
+            Уже есть аккаунт?
+            <a href="{% url 'users:login' %}"> ВОЙТИ </a>
         </div>
+        
     </form>
 </div>
 {% endblock %}
