@@ -2,6 +2,7 @@
 
 {% block content %}
   <div class="container">
+  {% if posts%}
   {%for post in posts%}
   <a class="post" href="{% url 'app:post' post.pk %}">
    <div>
@@ -14,5 +15,10 @@
       </div>
     </a>
   {% endfor %}
+  {% else %}
+  <div>
+    <div class="title"> Посты не найдены</div>
+  </div>
+  {% endif %}
   </div>
 {%endblock%}
