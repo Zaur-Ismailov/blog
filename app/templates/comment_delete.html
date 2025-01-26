@@ -4,13 +4,13 @@
 <div class="container">
   <form method="post">
     {% csrf_token %}
-    <div class="title">Подтвердите удаление поста</div>
+    <div class="title">Подтвердите удаление комментария</div>
 
     <div class="buttons">
       <button class="button primary">
         <ion-icon name="checkmark-circle-outline"></ion-icon>
       </button>
-      <a class="button danger" href="{% url 'app:home'  %}">
+      <a class="button danger" href="{% url 'app:post' comment.post.pk %}">
         <ion-icon name="close-circle-outline"></ion-icon>
       </a>
     </div>
