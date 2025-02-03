@@ -3,15 +3,46 @@ from .models import *
 from django.http import HttpResponse
 from .forms import PostForm,CommentForm
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 
 def home(request):
-    posts = Post.objects.all()
-    return render(request, 'home.html',{'posts': posts})
+   posts = Post.objects.all()
+   all_posts_count = posts.count()
+   quantity = int(request.GET.get("quantity", 3))
+   posts = posts[:quantity]
+   q = request.GET.get("q")
+
+
+   if q:
+       posts = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+
+
+   return render(
+       request, "home.html", {"posts": posts, "all_posts_count": all_posts_count}
+   )
+
+
 
 def post(request, pk):
-    post_data = Post.objects.get(id=pk)
+    post_data = get_object_or_404(Post, pk=pk)
+
+    if request.user.is_authenticated:
+        post_data.views.add(request.user)
+
+    post_comments = Comment.objects.filter(post=post_data)
+    post_comments = Paginator(post_comments, 3)
+    
+    page = request.GET.get('page')
+    post_comments=post_comments.get_page(page)
+    
+    
     form = CommentForm(request.POST or None)
+    # if request.method == 'POST':
+    #     create_comment(request,post_data)
+    #     return redirect('app:post', pk = post_data)
 
     if form.is_valid():
         if request.user.is_anonymous:
@@ -24,7 +55,7 @@ def post(request, pk):
         return redirect('app:post', pk=post_data.pk)
 
 
-    return render(request,'post.html', {'post': post_data, 'form':form})
+    return render(request,'post.html', {'post': post_data, 'form':form, 'post_comments': post_comments})
 
 
 
@@ -162,3 +193,13 @@ def reply(request, pk):
 def read_comment(request, pk):
     comment = Comment.objects.get(pk=pk)
     return render(request, 'read_comment.html', {'comment':comment})
+
+
+# def create_comment(request,post_data):
+#     form = CommentForm(request.Post)
+
+#     if form.is_valid():
+#         comment = form.save(commit=False)
+#         comment.post = post_data
+#         comment.author = request.user
+#         comment.save()

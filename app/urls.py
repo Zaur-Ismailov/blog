@@ -16,4 +16,5 @@ urlpatterns = [
     path('reply/<int:pk>/', reply, name='reply'),
     path('read_comment/<int:pk>/', read_comment, name='read_comment'),
     
+    
 ]

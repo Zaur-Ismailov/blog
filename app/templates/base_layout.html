@@ -8,10 +8,14 @@
   <link rel="stylesheet" href="{% static 'style.css' %}" />
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script defer src="{% static 'script.js' %}"></script>
 </head>
 
 <body>
-  <header>
+  <a class="to-start" href="#header">
+    <ion-icon name="arrow-up"></ion-icon>
+  </a>
+  <header id="header">
     <nav class="navbar">
       <div class="navbar-start">
         <a class="navbar-logo" href="{% url 'app:home'%}">
@@ -19,15 +23,21 @@
         </a>
       </div>
       <div class="navbar-menu">
+        <div class="navbar-item">
+          <form action="" method="get">
+            <input type="search" name="q" placeholder="Поиск по сайту">
+          </form>
+        </div>
+
         {% if not user.is_authenticated %}
         <div class="navbar-item">
-        <a class="button" href="{% url 'users:log_in' %}">
+        <a class="button primary" href="{% url 'users:log_in' %}">
           Войти
         </a>
       </div>
         {% else %}
         <div class="navbar-item">
-          <a class="button" href="{% url 'users:logout' %}">
+          <a class="button danger" href="{% url 'users:logout' %}">
             Выйти
           </a>
         </div>
